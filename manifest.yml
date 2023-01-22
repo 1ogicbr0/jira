@@ -1,0 +1,15 @@
+modules:
+  jira:projectPage:
+    - key: project-journal-cloud-hello-world-project-page
+      resource: main
+      resolver:
+        function: resolver
+      title: Project Journal Cloud
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+app:
+  id: ari:cloud:ecosystem::app/eab6129e-8c90-45ee-834d-03fd89907c59
