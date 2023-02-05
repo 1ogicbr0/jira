@@ -10,6 +10,10 @@ modules:
       handler: index.handler
 resources:
   - key: main
-    path: static/hello-world/build
+    path: static/project-journal/build
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
 app:
   id: ari:cloud:ecosystem::app/eab6129e-8c90-45ee-834d-03fd89907c59
