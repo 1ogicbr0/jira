@@ -1,16 +1,19 @@
 import Resolver from '@forge/resolver';
-import api, {route} from "@forge/api";
+import api, {route,router} from "@forge/api";
 
 const resolver = new Resolver();
-
+console.log("WORKING")
 resolver.define('getText', (req) => {
     console.log(req);
 
     return 'Hello, world!';
 });
 
-resolver.define('getIssues', async (projectId) => {
-    const jql = "project = \"Project Journal for Jira Cloud\" and status != Done"
+resolver.define('getIssues', async ({payload}) => {
+    const { projectId , projectKey } = payload
+    console.log(payload)
+    const jql = `project = ${projectId}`
+    //key & id
     const response = await api
         .asUser()
         .requestJira(route`/rest/api/3/search?jql=${jql}&fields=key,summary,assignee,reporter,status`, {
