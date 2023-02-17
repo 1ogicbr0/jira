@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div>
-      <h2>Open Issues - MY PROJECT </h2>
+      <h2>Open Issues - PROJECT </h2>
       {issues.length > 0 ? (
         <table>
           <thead>

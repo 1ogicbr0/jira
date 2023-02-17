@@ -11,6 +11,8 @@ modules:
 resources:
   - key: main
     path: static/project-journal/build
+    tunnel:
+      port: 3000
 permissions:
   scopes:
     - read:jira-work

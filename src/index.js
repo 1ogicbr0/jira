@@ -12,7 +12,7 @@ resolver.define('getText', (req) => {
 resolver.define('getIssues', async ({payload}) => {
     const { projectId , projectKey } = payload
     console.log(payload)
-    const jql = `project = ${projectId}`
+    const jql = `project = ${projectId ? projectId : projectKey}`
     //key & id
     const response = await api
         .asUser()
@@ -34,7 +34,7 @@ resolver.define('getIssues', async ({payload}) => {
     }));
 });
 
-
+export const runAdminPage = resolver.getDefinitions();
 
 export const handler = resolver.getDefinitions();
 
