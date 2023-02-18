@@ -5,13 +5,13 @@ function App() {
     const [issues, setIssues] = useState([]);
 
     useEffect(() => {
-        invoke('getIssues', { projectId: 10001 }).then(setIssues);
+        invoke('getIssues', { projectId: 10001, key:"JOUR", }).then(setIssues);
     }, []);
 
     return (
         <div>
             <h2>Open Issues</h2>
-            {issues.length > 0 ? (
+            {issues ? (
                 <table>
                     <thead>
                     <tr>
