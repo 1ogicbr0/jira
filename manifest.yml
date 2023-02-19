@@ -11,9 +11,11 @@ modules:
 resources:
   - key: main
     path: static/project-journal/build
+    tunnel:
+      port: 3000
 permissions:
   scopes:
     - read:jira-work
     - write:jira-work
 app:
-  id: ari:cloud:ecosystem::app/eab6129e-8c90-45ee-834d-03fd89907c59
+  id: ari:cloud:ecosystem::app/58969a38-064b-4a1e-b145-378e50ac091e
