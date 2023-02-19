@@ -15,7 +15,7 @@ function App() {
                 <table>
                     <thead>
                     <tr>
-                        <th>Issue Key</th>
+                        <th>The Issue Key</th>
                         <th>Summary</th>
                         <th>Reporter</th>
                         <th>Assignee</th>
