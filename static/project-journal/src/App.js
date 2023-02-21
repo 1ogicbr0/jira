@@ -1,58 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { invoke, view, router } from "@forge/bridge";
-import { useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Link, useNavigate } from "react-router-dom";
+import CreatePage from "./components/CreatePages";
+import Home from "./components/Home";
+
+const pages = [];
 
 function App() {
-  const [projectKey, setKey] = useState("");
-  const [projectId, setId] = useState("");
-  view.getContext().then((data) => {
-    const { key, id } = data.extension.project;
-    setKey(key);
-    setId(id);
-  });
-
-  const [issues, setIssues] = useState([]);
-  useEffect(() => {
-    if (projectKey) {
-      invoke("getIssues", {
-        projectId: projectId,
-        projectKey: projectKey,
-      }).then(setIssues);
-    }
-  }, [projectKey, projectId]);
-
-  return (
-    <div>
-      <h2>Open Issues - PROJECT </h2>
-      {issues.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Issue Key</th>
-              <th>Test Shehry Key</th>
-              <th>Summary</th>
-              <th>Reporter</th>
-              <th>Assignee</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {issues.map((issue) => (
-              <tr key={issue.key}>
-                <td>{issue.key}</td>
-                <td>{issue.summary}</td>
-                <td>{issue.reporter}</td>
-                <td>{issue.assignee}</td>
-                <td>{issue.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+  console.log(view);
+  const navigate = useNavigate();
+  const [ mypages, setPages ] = useState([])
+  const location = useLocation();
+  // console.log("Location", location); 
+  const createPageHandler = () => {
+    const updated = createpage(`Project${pages.length}`,pages.length)
+    setPages(updated)
+    navigate(`/${updated.length-1}`)
+    console.log(updated)
+    console.log(updated.length-1)
+  }
+  return (<>
+    <div>  <button onClick={createPageHandler}>Create Project Journal</button> </div>
+    <Routes>
+      <Route path="/" element={<Home pages={mypages}/>}/>
+      {pages.map( props => <Route path={props.path} element={props.element} />)}
+    </Routes>
+    </>
   );
 }
 
 export default App;
+
+const createpage = (name,id) => {
+  const data ={
+    key:id,
+    id,
+    name,
+    path:`/${id}`,
+    element: <CreatePage pages={pages} name={name} key={id}/>
+  } 
+  id = id +1;
+  pages.push(data)
+  return(pages)
+}
+
