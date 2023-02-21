@@ -1,63 +1,39 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { view } from "@forge/bridge";
 import { Router, Route, Routes, useNavigate } from "react-router";
+import CreatePage from "";
+import Home from "./components/Home";
+let pages =[];
 
-function Link({ to, children }) {
-  const navigate = useNavigate();
-
-  return (
-    <a
-    style={{
-      textDecoration: "none",
-      color: "black",
-      fontSize: "20px",
-   
-    }}
-      href={to}
-      onClick={(event) => {
-        event.preventDefault();
-        navigate(to);
-      }}
-    >
-          <div
-     style={{
-        display: "flex",
-      padding:"10px",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        height: "40px",
-        boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
-        borderRadius: "10px",
-        marginTop:'10px'
-
-      }}
-    >
-      {children}
-      </div>
-    </a>
-  );
+const createpage = (name,id) => {
+  const data ={
+    key:id,
+    id,
+    name,
+    path:`/${id}`,
+    element: <CreatePage pages={pages} name={name} key={id}/>
+  }
+  id = id +1;
+  pages.push(data)
+  return(pages)
 }
 
-function Home() {
-  return (
-    <>
 
-      <Link to="/page-with-path:id">Project Journal 1 </Link>
-   
-         <Link to="/page-with-path">Project Journal 2 </Link>
-      
-            <Link to="/page-with-path">Project Journal 3 </Link>
-      </>
-  );
-}
 
-function PageWithPath() {
-  return <h2>Page with path</h2>;
-}
 
 function App() {
   const [history, setHistory] = useState(null);
-
+  const navigate = useNavigate();
+  const [ mypages, setPages ] = useState([])
+  const location = useLocation();
+  // console.log("Location", location);
+  const createPageHandler = () => {
+    const updated = createpage(`Project${pages.length}`,pages.length)
+    setPages(updated)
+    navigate(`/${updated.length-1}`)
+    console.log(updated)
+    console.log(updated.length-1)
+  }
   useEffect(() => {
     view.createHistory().then((newHistory) => {
       setHistory(newHistory);
@@ -89,16 +65,14 @@ function App() {
   return (
     <div>
       {history && historyState ? (
-        <Router
-          navigator={history}
-          navigationType={historyState.action}
-          location={historyState.location}
-        >
-          <Routes>
-            <Route path="/:id" element={<PageWithPath />}></Route>
-            <Route path="/" element={<Home />}></Route>
-          </Routes>
-        </Router>
+    <>
+    <div> 
+       <button onClick={createPageHandler}>Create Project Journal</button> </div>
+    <Routes>
+      <Route path="/" element={<Home pages={mypages}/>}/>
+      {pages.map( props => <Route path={props.path} element={props.element} />)}
+    </Routes>
+    </>
       ) : (
         "Loading..."
       )}

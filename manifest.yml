@@ -4,7 +4,7 @@ modules:
       resource: main
       resolver:
         function: resolver
-      title: Project Journal
+      title: Project Page
   function:
     - key: resolver
       handler: index.handler

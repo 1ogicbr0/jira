@@ -1,16 +1,17 @@
 import Resolver from '@forge/resolver';
-import api, {route} from "@forge/api";
+import api, {route,router} from "@forge/api";
+
 const resolver = new Resolver();
 console.log("WORKING")
 resolver.define('getText', (req) => {
     console.log(req);
     return 'Hello, world!';
 });
-resolver.define('getIssues', async (req) => {
-    console.log("REQ", req)
-    const jql = `project = ${req.payload.projectKey}`
-    
 
+resolver.define('getIssues', async ({payload}) => {
+    const { projectId , projectKey } = payload
+    console.log(payload)
+    const jql = `project = ${projectId ? projectId : projectKey}`
     //key & id
     const response = await api
         .asUser()
@@ -33,4 +34,8 @@ resolver.define('getIssues', async (req) => {
         status: "To Do"
     }));
 });
+
+export const runAdminPage = resolver.getDefinitions();
+
 export const handler = resolver.getDefinitions();
+
