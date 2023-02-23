@@ -1,9 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import CreatePage from "../components/CreatePages";
-import { v4 as uuidv4 } from "uuid";
-
-import Button from "@atlaskit/button/standard-button";
+import React, { useState } from "react";
+import Button from "@atlaskit/button";
 import Modal, {
   ModalBody,
   ModalFooter,
@@ -11,93 +7,93 @@ import Modal, {
   ModalTitle,
   ModalTransition,
 } from "@atlaskit/modal-dialog";
-export const pages = [];
+import { v4 as uuid } from "uuid";
+import {useNavigate} from 'react-router-dom'
+import { useContext} from "react";
+import { MyContext } from "../context/useContext";
+export default function Home() {
+  
+  const { data, updateData } = useContext(MyContext);
+  const [name, setName] = useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
+  const navigate = useNavigate()
 
-const createpage = (name, id) => {
-  const data = {
-    key: id,
-    id,
-    name,
-    path: `/${id}`,
-    element: <CreatePage pages={pages} name={name} key={id} />,
-  };
-
-  pages.push(data);
-  return pages;
-};
-function Home(props) {
-  const [mypages, setPages] = useState(pages);
-  const [isOpen, setIsOpen] = useState(false);
-  const openModal = useCallback(() => setIsOpen(true), []);
-  const closeModal = useCallback(() => setIsOpen(false), []);
-  const [projectName, setProjectName] = useState("");
-  const navigate = useNavigate();
-
-  const createPageHandler = () => {
-    const id = uuidv4();
-    const updated = createpage(`${projectName}`, id);
-    setPages(updated);
-    navigate(`/${id}`)
-    // console.log(updated)
-    // console.log(updated.length-1)
-  };
-  props.setNumberOfPages(pages);
-  return (
-    <div>
-      <ModalTransition>
-        {isOpen && (
-          <Modal onClose={closeModal}>
-            <ModalHeader>
-              <ModalTitle>Create a Project</ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-              Please Enter the name of your project{" "}
-              <input
-                type="text"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button appearance="subtle" onClick={closeModal}>
-                Close
-              </Button>
-              <Button
-                appearance="primary"
-                onClick={() => {
-                  createPageHandler();
-                  closeModal();
-                }}
-                autoFocus
-              >
-                Done
-              </Button>
-            </ModalFooter>
-          </Modal>
-        )}
-      </ModalTransition>
-      <h2>HOME</h2>
-      <div></div>
-      <div>
-        <Button
-          onClick={() => {
-            openModal();
-          }}
-          appearance="primary"
-        >
-          Create Project Journal
+  return (  
+    <>
+      <div>Home</div>
+      {/* <Button onClick={() => setData([...data, 'new item'])}>Add</Button> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <Button appearance="primary" onClick={open}>
+          Create a Project
         </Button>
+        <ModalTransition>
+          {isOpen && (
+            <Modal onClose={close}>
+              <ModalHeader>
+                <ModalTitle>Page</ModalTitle>
+              </ModalHeader>
+              <ModalBody>
+                <input
+                  type="text"
+                  placeholder="Project Name"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button appearance="subtle" onClick={close}>
+                  Cancel
+                </Button>
+                <Button
+                  appearance="primary"
+                  onClick={() => {
+                    updateData({name, id: uuid()});
+                    close();
+                  }}
+                  autoFocus
+                >
+                  Submit
+                </Button>
+              </ModalFooter>
+            </Modal>
+          )}
+        </ModalTransition>
       </div>
 
-      {mypages.map((item,index) => (
-        <Link key={index} to={item.path}>
-          <div>
+    
+        {data && data?.map((item) => (
+         
+          <div
+          key={item.id}
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            padding: "10px",
+            border: "none",
+            borderRadius: "10px",
+            margin: "10px 5px",
+            width: "180px",
+            fontSize: "20px",
+            boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
+        
+           
+          }}
+          onClick={() => navigate(`/project/${item.id}`)}
+          
+          >
             <div>{item.name}</div>
           </div>
-        </Link>
-      ))}
-    </div>
+        ))}
+      </>
+ 
   );
+  
 }
-
-export default Home;

@@ -6,12 +6,16 @@
   "dependencies": {
     "@atlaskit/button": "^16.5.5",
     "@atlaskit/css-reset": "^6.0.1",
+    "@atlaskit/form": "^8.8.4",
+    "@atlaskit/input": "^8.0.7",
     "@atlaskit/modal-dialog": "^12.4.9",
     "@emotion/react": "^11.10.6",
     "@forge/bridge": "^2.5.0",
+    "prop-types": "^15.8.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^6.8.1"
+    "react-router-dom": "^6.8.1",
+    "uuidv4": "^6.2.13"
   },
   "scripts": {
     "deploy": "npm run build && cd ../../ && forge deploy",

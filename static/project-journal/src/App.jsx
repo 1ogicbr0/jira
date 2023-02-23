@@ -1,12 +1,12 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { view } from "@forge/bridge";
-import {  Route, Routes } from "react-router";
-
+import { Route, Routes } from "react-router";
+import PropTypes from "prop-types";
 import Home from "./pages/Home";
-
+import DetailsPage from  "./components/DetailsPage";
 function App() {
   const [history, setHistory] = useState(null);
-  const [numberOfPages, setNumberOfPages] = useState([]);
+  const [ setNumberOfPages] = useState([]);
 
   useEffect(() => {
     view.createHistory().then((newHistory) => {
@@ -40,18 +40,12 @@ function App() {
     <div>
       {history && historyState ? (
         <>
-          <Routes
-            navigator={history}
-            navigationType={historyState.action}
-            location={historyState.location}
-          >
+          <Routes>
             <Route
               path="/"
               element={<Home setNumberOfPages={setNumberOfPages} />}
             />
-            {numberOfPages?.map((props,index) => (
-              <Route key={index} path={props.path} element={props.element} />
-            ))}
+             <Route path="/project/:id" element={<DetailsPage/>} />
           </Routes>
         </>
       ) : (
@@ -62,3 +56,10 @@ function App() {
 }
 
 export default App;
+App.propTypes = {
+  path: PropTypes.string,
+  element: PropTypes.element,
+  setPages: PropTypes.func,
+  pages: PropTypes.array,
+  key: PropTypes.number,
+};
