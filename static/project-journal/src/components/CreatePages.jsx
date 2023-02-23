@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Route, Routes, useLocation, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, Link } from "react-router-dom";
 
 const CreatePage =(props) => {
     const location = useLocation();
@@ -8,28 +8,8 @@ const CreatePage =(props) => {
     return (
       <>
       <div
-       style={{
-        width:'100%',
-        display:'flex',
-        justifyContent:'flex-end',
-        alignItems:'center',
-        padding:'10px'
-
-       }}
       >
       <Link 
-         style={{
-          color:'#fff',
-          padding:'10px',
-          fontSize: "15px",
-          fontWeight: "bold",
-          backgroundColor: "#0052CC",
-          border:'none',
-          textDecoration:'none'
-
-  
-  
-         }}
       to="/">Back</Link>
       </div>
  

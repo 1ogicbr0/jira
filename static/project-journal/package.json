@@ -15,7 +15,7 @@
   },
   "scripts": {
     "deploy": "npm run build && cd ../../ && forge deploy",
-    "start": "react-scripts start",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
@@ -32,6 +32,8 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.34.0",
+    "eslint-plugin-react": "^7.32.2",
     "react-scripts": "^5.0.1"
   }
 }
