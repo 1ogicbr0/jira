@@ -5,6 +5,7 @@ modules:
       resolver:
         function: resolver
       title: Project Page
+      layout: blank
   function:
     - key: resolver
       handler: index.handler
@@ -23,5 +24,4 @@ permissions:
       - 'unsafe-inline'  
 app:
   id: ari:cloud:ecosystem::app/58969a38-064b-4a1e-b145-378e50ac091e
-
 

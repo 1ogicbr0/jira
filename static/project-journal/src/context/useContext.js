@@ -12,6 +12,7 @@ function MyProvider({ children }) {
             return [...prevData, newData]
         })
   };
+
  const deleteData = (id) => {
 
     setData(prevData => { 

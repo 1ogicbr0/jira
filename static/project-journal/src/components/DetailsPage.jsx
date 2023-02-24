@@ -15,11 +15,12 @@ const page = data.find((item) => item.id === id);
    
       <div>
         <Link to="/">Back</Link>
+        <Link to="/modal">Modal</Link>
       </div>
 
  
-      <h2>{page.name}</h2>
-      <Edit page={page}/>
+      {page && <><h2>{page.name}</h2> 
+      <Edit page={page}/></>}
     </>
   );
 };
