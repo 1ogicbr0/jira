@@ -3,8 +3,8 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
-# manifest file so that app-id is not added
-*.yml
+# credentail file contains app id so that app-id is not added
+credentials.yml
 
 # Node artifact files
 node_modules/

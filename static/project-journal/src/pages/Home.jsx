@@ -5,27 +5,14 @@ import { useContext } from "react";
 
 import CustomModal from "../components/Modal";
 import { MyContext } from "../context/useContext";
-import PieChart from "../components/piechart";
 export default function Home() {
   const { data: projects } = useContext(MyContext);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const navigate = useNavigate();
 
-  const handleClick = async () => {
-    const response = await fetch('https://00362786-65a9-4ad0-9293-f73a9578cbda.hello.atlassian-dev.net/x1/eruLGhPpDbJyb5Ab_MEXHNlfE64');
-    if (response.ok) {
-      const data = await response.json();
-      // handle the response data here
-      console.log(data);
-    } else {
-      console.error('Error:', response.statusText);
-    }
-  }
   return (
     <>
-      <div
-       onClick={handleClick}
-      >Home</div>
+      <div>Home</div>
       <div
         style={{
           display: "flex",
@@ -63,7 +50,6 @@ export default function Home() {
             <div>{project.name}</div>
           </div>
         ))}
-      <PieChart />
     </>
   );
 }
