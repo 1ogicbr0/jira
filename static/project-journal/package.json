@@ -20,6 +20,7 @@
     "uuidv4": "^6.2.13"
   },
   "scripts": {
+    "predeploy":"#!/bin/bash\nmyid=$(cat ../../credentials.yml|grep \"APP_ID\")\nmyid=$(echo \"$myid\"|sed \"s/APP_ID='//; s/'//\")\nvalid=$(echo $myid| grep \"ari:cloud\")\nif [ -z \"$myid\" ];then\n\techo \"APP_ID variable not found in credentials.yml file\"\nelse\n\tvar1='${id}'\n\tvar2=$myid\n\tsed -i -e \"s|$var1|$var2|g\" ../../manifest.yml\nfi\ncheck_val=$(cat ../../manifest.yml|grep \"ari:cloud:ecosystem\")\nif [ \"$check_val\" ] ;then\n\techo \"App Id added successfully\"\nelse\n\techo \"App Id not Added\"\nfi",
     "deploy": "npm run build && cd ../../ && forge deploy",
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
