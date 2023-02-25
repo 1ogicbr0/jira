@@ -1,5 +1,5 @@
 import Resolver from '@forge/resolver';
-import api, {route,router} from "@forge/api";
+import api, {route,router, storage} from "@forge/api";
 
 const resolver = new Resolver();
 console.log("WORKING")
@@ -35,7 +35,11 @@ resolver.define('getIssues', async ({payload}) => {
     }));
 });
 
-export const runAdminPage = resolver.getDefinitions();
+resolver.define('getStorage', async({payload}) => {return await storage.get(payload.key)});
+
+resolver.define('setStorage', async({payload}) => await storage.set(payload.key, payload.data));
+
+resolver.define('deleteStorage', async({payload}) => await storage.delete(payload.key));
 
 export const handler = resolver.getDefinitions();
 

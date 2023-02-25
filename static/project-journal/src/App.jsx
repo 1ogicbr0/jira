@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from "react";
-import { view } from "@forge/bridge";
+import { view, invoke } from "@forge/bridge";
 import {  Router, Route, Routes, } from "react-router";
 import PropTypes from "prop-types";
 
@@ -14,6 +14,10 @@ function App() {
   const [ setNumberOfPages] = useState([]);
 
   useEffect(() => {
+    // invoke('setStorage', { key:'dataString', data:'binyam' })
+    invoke('setStorage', { key:'dataArray', data:[{name:"Binyam"},{name:"Shehry"},{name:"Ronaldo"}] })
+    invoke('getStorage', {key: 'dataArray'}).then(data => console.log(data));
+    // invoke('deleteStorage', {key: 'project'});
     view.createHistory().then((newHistory) => {
       setHistory(newHistory);
     });
