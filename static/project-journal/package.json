@@ -10,6 +10,7 @@
     "@atlaskit/input": "^8.0.7",
     "@atlaskit/modal-dialog": "^12.4.9",
     "@atlaskit/page-layout": "^1.3.9",
+    "@atlaskit/spinner": "^15.3.4",
     "@atlaskit/textfield": "^5.3.6",
     "@emotion/react": "^11.10.6",
     "@forge/api": "^2.11.0",
@@ -23,7 +24,7 @@
     "uuidv4": "^6.2.13"
   },
   "scripts": {
-    "predeploy":"#!/bin/bash\nmyid=$(cat ../../credentials.yml|grep \"APP_ID\")\nmyid=$(echo \"$myid\"|sed \"s/APP_ID='//; s/'//\")\nvalid=$(echo $myid| grep \"ari:cloud\")\nif [ -z \"$myid\" ];then\n\techo \"APP_ID variable not found in credentials.yml file\"\nelse\n\tvar1='${id}'\n\tvar2=$myid\n\tsed -i -e \"s|$var1|$var2|g\" ../../manifest.yml\nfi\ncheck_val=$(cat ../../manifest.yml|grep \"ari:cloud:ecosystem\")\nif [ \"$check_val\" ] ;then\n\techo \"App Id added successfully\"\nelse\n\techo \"App Id not Added\"\nfi",
+    "predeploy": "#!/bin/bash\nmyid=$(cat ../../credentials.yml|grep \"APP_ID\")\nmyid=$(echo \"$myid\"|sed \"s/APP_ID='//; s/'//\")\nvalid=$(echo $myid| grep \"ari:cloud\")\nif [ -z \"$myid\" ];then\n\techo \"APP_ID variable not found in credentials.yml file\"\nelse\n\tvar1='${id}'\n\tvar2=$myid\n\tsed -i -e \"s|$var1|$var2|g\" ../../manifest.yml\nfi\ncheck_val=$(cat ../../manifest.yml|grep \"ari:cloud:ecosystem\")\nif [ \"$check_val\" ] ;then\n\techo \"App Id added successfully\"\nelse\n\techo \"App Id not Added\"\nfi",
     "deploy": "npm run build && cd ../../ && forge deploy",
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",

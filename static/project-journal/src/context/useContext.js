@@ -7,6 +7,10 @@ const MyContext = createContext();
 function MyProvider({ children }) {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+
+  const addData = (newData) => {
+    setData(newData);
+  };
   const updateData = (newData) => {
         setData(prevData => {
             return [...prevData, newData]
@@ -37,7 +41,7 @@ const changeData = (id, name) => {
 
   };
   return (
-    <MyContext.Provider value={{ data, updateData, deleteData, changeData }}>
+    <MyContext.Provider value={{ data, updateData, deleteData, changeData, addData }}>
       {children}
     </MyContext.Provider>
   );

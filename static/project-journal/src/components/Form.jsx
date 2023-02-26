@@ -1,9 +1,9 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { MyContext } from "../context/useContext";
 import { v4 as uuid } from "uuid";
-
+import { invoke } from "@forge/bridge";
 import Textfield from "@atlaskit/textfield";
-
+import Loading from "./Spinner";
 import Button, { ButtonGroup } from "@atlaskit/button";
 import Form, {
   ErrorMessage,
@@ -14,12 +14,32 @@ import Form, {
 } from "@atlaskit/form";
 
 const CustomForm = (props) => {
-  const { updateData } = useContext(MyContext);
-
+  const { updateData, addData } = useContext(MyContext);
+  const [loading, setLoading] = useState(false);
   const submitHandler = (formState) => {
-
-    updateData({ ...formState, id: uuid() });
-    props.ModalHandler();
+    console.log(formState);
+    setLoading(true);
+    invoke("getStorage", { key: "projectJournal" }).then((data) => {
+      let previousData = [];
+      if (data === {}) {
+        previousData = [];
+      } else {
+        previousData = data;
+      }
+      invoke("setStorage", {
+        key: "projectJournal",
+        data:
+          data && data.length
+            ? [...data, { ...formState, id: uuid() }]
+            : [{ ...formState, id: uuid() }],
+      }).then(() => {
+        data && data.length
+          ? updateData({ ...formState, id: uuid() })
+          : addData([{ ...formState, id: uuid() }]);
+        setLoading(false);
+        props.ModalHandler();
+      });
+    });
   };
   return (
     <Form onSubmit={submitHandler}>
@@ -55,7 +75,7 @@ const CustomForm = (props) => {
                 Cancel
               </Button>
               <Button type="submit" appearance="primary">
-                Submit
+                {loading ? <Loading/>: "Submit"}
               </Button>
             </ButtonGroup>
           </FormFooter>

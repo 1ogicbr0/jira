@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
-
+import { invoke } from "@forge/bridge";
 import { useContext } from "react";
 import { MyContext } from "../context/useContext";
 import PropTypes from "prop-types";
 import Textfield from "@atlaskit/textfield";
-
+import Loading from "./Spinner";
 import Button, { ButtonGroup } from "@atlaskit/button";
 import Modal, {
   ModalBody,
@@ -21,10 +21,10 @@ import Form, {
   ValidMessage,
 } from "@atlaskit/form";
 
-export default function Edit({ page }) {
+export default function Edit({ page, setIsLoading, isLoading }) {
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const { changeData, deleteData } = useContext(MyContext);
+  const { changeData, deleteData, data } = useContext(MyContext);
   const [newData, setNewData] = useState(page.name);
   const { id } = page;
 
@@ -40,16 +40,33 @@ export default function Edit({ page }) {
     }
     return undefined;
   }
-  
+
   const handleEdit = () => {
-    changeData(id, newData);
-   setIsOpenEdit(false);
+    setIsLoading(true);
+    invoke("setStorage", {
+      key: "projectJournal",
+      data: data.map((item) =>
+        item.id === id ? { ...item, name: newData } : item
+      ),
+    }).then(() => {
+      changeData(id, newData);
+      setIsOpenEdit(false);
+      setIsLoading(false);
+    });
   };
 
   const handleDelete = () => {
-    deleteData(id);
-    setIsOpenDelete(false);
+    setIsLoading(true);
+    invoke("setStorage", {
+      key: "projectJournal",
+      data: data.filter((item) => item.id !== id),
+    }).then(() => {
+      deleteData(id);
+      setIsOpenDelete(false);
+      setIsLoading(false);
+    });
   };
+
   // const submitHandler = (formState) => {
   // setNewData(formState.name);
   // handleEdit();
@@ -70,54 +87,56 @@ export default function Edit({ page }) {
               <ModalTitle>Editing {page.name}</ModalTitle>
             </ModalHeader>
             <ModalBody>
-            <Form onSubmit={handleEdit}>
-      {({ formProps }) => (
-        <form {...formProps} name="project-form">
-          <Field
-            label="Project Name"
-            name="name"
-            validate={validate}
-            defaultValue={newData}
-          >
-            {({ fieldProps, error, meta: { valid } }) => (
-              
-              <Fragment>
-                <Textfield {...fieldProps}  
-                onChange={(e) => setNewData(e.target.value)}
-                />
-                {valid && <ValidMessage>Valid Project Name</ValidMessage>}
-                {error === "EMPTY_FORM" && (
-                  <ErrorMessage>Project name is empty</ErrorMessage>
+              <Form onSubmit={handleEdit}>
+                {({ formProps }) => (
+                  <form {...formProps} name="project-form">
+                    <Field
+                      label="Project Name"
+                      name="name"
+                      validate={validate}
+                      defaultValue={newData}
+                    >
+                      {({ fieldProps, error, meta: { valid } }) => (
+                        <Fragment>
+                          <Textfield
+                            {...fieldProps}
+                            onChange={(e) => setNewData(e.target.value)}
+                          />
+                          {valid && (
+                            <ValidMessage>Valid Project Name</ValidMessage>
+                          )}
+                          {error === "EMPTY_FORM" && (
+                            <ErrorMessage>Project name is empty</ErrorMessage>
+                          )}
+                          {error === "LESS_CHAR" && (
+                            <ErrorMessage>
+                              Project name should be great than 3 characters
+                            </ErrorMessage>
+                          )}
+                          {error === "PROJECT_EXIST" && (
+                            <ErrorMessage>Project already exists</ErrorMessage>
+                          )}
+                        </Fragment>
+                      )}
+                    </Field>
+                    <ModalFooter>
+                      <FormFooter>
+                        <ButtonGroup>
+                          <Button
+                            appearance="subtle"
+                            onClick={() => setIsOpenEdit(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button type="submit" appearance="primary">
+                            {isLoading ? <Loading size="small" /> : "Submit"}
+                          </Button>
+                        </ButtonGroup>
+                      </FormFooter>
+                    </ModalFooter>
+                  </form>
                 )}
-                {error === "LESS_CHAR" && (
-                  <ErrorMessage>
-                    Project name should be great than 3 characters
-                  </ErrorMessage>
-                )}
-                {error === "PROJECT_EXIST" && (
-                  <ErrorMessage>Project already exists</ErrorMessage>
-                )}
-              </Fragment>
-            )}
-          </Field>
-          <ModalFooter>
-          <FormFooter>
-            <ButtonGroup>
-              <Button appearance="subtle" onClick={
-                () => setIsOpenEdit(false)
-              }>
-                Cancel
-              </Button>
-              <Button type="submit" appearance="primary">
-                Submit
-              </Button>
-            </ButtonGroup>
-          </FormFooter>
-          </ModalFooter>
-
-        </form>
-      )}
-    </Form>
+              </Form>
             </ModalBody>
           </Modal>
         )}
@@ -137,7 +156,7 @@ export default function Edit({ page }) {
                 Cancel
               </Button>
               <Button appearance="danger" autoFocus onClick={handleDelete}>
-                Yes
+                {isLoading ? <Loading size="small" /> : "Yes"}
               </Button>
             </ModalFooter>
           </Modal>

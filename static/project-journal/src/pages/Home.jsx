@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@atlaskit/button";
+import { invoke } from "@forge/bridge";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-
+import Loading from "../components/Spinner";
 import CustomModal from "../components/Modal";
 import { MyContext } from "../context/useContext";
 export default function Home() {
-  const { data: projects } = useContext(MyContext);
+  const { data: projects, addData } = useContext(MyContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    setIsLoading(true);
+    invoke("getStorage", { key: "projectJournal" }).then((data) => {
+      addData(data);
+      setIsLoading(false);
+      console.log("projects", projects);
+    });
+  }, []);
   return (
     <>
       <div>Home</div>
@@ -29,8 +38,8 @@ export default function Home() {
         />
       </div>
 
-      {projects &&
-        projects?.map((project, index) => (
+      {projects?.length > 0 ? (
+        projects.map((project, index) => (
           <div
             key={project.id}
             style={{
@@ -49,7 +58,23 @@ export default function Home() {
             <div>{index + 1}.</div>
             <div>{project.name}</div>
           </div>
-        ))}
+        ))
+      ) : (
+        
+        <div>No Projects</div>
+      )}
+      {isLoading && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Loading size="xlarge" appearance="inherit" />
+        </div>
+      )}
     </>
   );
 }
