@@ -66,10 +66,11 @@ export default function Home() {
       {isLoading && (
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            
           }}
         >
           <Loading size="xlarge" appearance="inherit" />
