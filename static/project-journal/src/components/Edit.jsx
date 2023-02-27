@@ -1,6 +1,5 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState,useContext } from "react";
 import { invoke } from "@forge/bridge";
-import { useContext } from "react";
 import { MyContext } from "../context/useContext";
 import PropTypes from "prop-types";
 import Textfield from "@atlaskit/textfield";
@@ -17,29 +16,15 @@ import Form, {
   ErrorMessage,
   Field,
   FormFooter,
-  HelperMessage,
   ValidMessage,
 } from "@atlaskit/form";
 
-export default function Edit({ page, setIsLoading, isLoading }) {
+const  Edit = ({ page, setIsLoading, isLoading }) => {
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const { changeData, deleteData, data } = useContext(MyContext);
+  const { changeData, data } = useContext(MyContext);
   const [newData, setNewData] = useState(page.name);
   const { id } = page;
 
-  function validate(value) {
-    if (value === "") {
-      return "EMPTY_FORM";
-    }
-    if (value.length < 3) {
-      return "LESS_CHAR";
-    }
-    if (value === "working") {
-      return "PROJECT_EXIST";
-    }
-    return undefined;
-  }
 
   const handleEdit = () => {
     setIsLoading(true);
@@ -55,31 +40,12 @@ export default function Edit({ page, setIsLoading, isLoading }) {
     });
   };
 
-  const handleDelete = () => {
-    setIsLoading(true);
-    invoke("setStorage", {
-      key: "projectJournal",
-      data: data.filter((item) => item.id !== id),
-    }).then(() => {
-      deleteData(id);
-      setIsOpenDelete(false);
-      setIsLoading(false);
-    });
-  };
-
   // const submitHandler = (formState) => {
   // setNewData(formState.name);
   // handleEdit();
   // };
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        gridGap: "10px",
-      }}
-    >
+    <Fragment>
       <ModalTransition>
         {isOpenEdit && (
           <Modal onClose={close}>
@@ -140,27 +106,6 @@ export default function Edit({ page, setIsLoading, isLoading }) {
             </ModalBody>
           </Modal>
         )}
-        {isOpenDelete && (
-          <Modal onClose={close}>
-            <ModalHeader>
-              <ModalTitle>
-                Are you sure you want to delete: {page.name}?
-              </ModalTitle>
-            </ModalHeader>
-
-            <ModalFooter>
-              <Button
-                appearance="subtle"
-                onClick={() => setIsOpenDelete(false)}
-              >
-                Cancel
-              </Button>
-              <Button appearance="danger" autoFocus onClick={handleDelete}>
-                {isLoading ? <Loading size="small" /> : "Yes"}
-              </Button>
-            </ModalFooter>
-          </Modal>
-        )}
       </ModalTransition>
       <Button
         appearance="primary"
@@ -170,18 +115,27 @@ export default function Edit({ page, setIsLoading, isLoading }) {
       >
         Edit
       </Button>
-      <Button
-        appearance="danger"
-        onClick={() => {
-          setIsOpenDelete(true);
-        }}
-      >
-        Delete
-      </Button>
-    </div>
+    </Fragment>
   );
 }
 
 Edit.propTypes = {
   page: PropTypes.object,
 };
+
+
+export default Edit;
+
+
+function validate(value) {
+  if (value === "") {
+    return "EMPTY_FORM";
+  }
+  if (value.length < 3) {
+    return "LESS_CHAR";
+  }
+  if (value === "working") {
+    return "PROJECT_EXIST";
+  }
+  return undefined;
+}

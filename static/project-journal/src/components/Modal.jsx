@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
-import { v4 as uuid } from "uuid";
+import React, { useEffect } from "react";
 import Modal, {
   ModalBody,
   ModalFooter,
@@ -7,9 +6,7 @@ import Modal, {
   ModalTitle,
   ModalTransition,
 } from "@atlaskit/modal-dialog";
-import Button from "@atlaskit/button";
 
-import { MyContext } from "../context/useContext";
 import CustomForm from "./Form";
 
 const CustomModal = (props) => {

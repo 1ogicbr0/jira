@@ -1,4 +1,5 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
+import React, { Fragment, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MyContext } from "../context/useContext";
 import { v4 as uuid } from "uuid";
 import { invoke } from "@forge/bridge";
@@ -9,35 +10,31 @@ import Form, {
   ErrorMessage,
   Field,
   FormFooter,
-  HelperMessage,
   ValidMessage,
 } from "@atlaskit/form";
 
 const CustomForm = (props) => {
+  const navigate = useNavigate();
   const { updateData, addData } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
   const submitHandler = (formState) => {
     console.log(formState);
     setLoading(true);
+    const id = uuid()
     invoke("getStorage", { key: "projectJournal" }).then((data) => {
-      let previousData = [];
-      if (data === {}) {
-        previousData = [];
-      } else {
-        previousData = data;
-      }
       invoke("setStorage", {
         key: "projectJournal",
         data:
           data && data.length
-            ? [...data, { ...formState, id: uuid() }]
-            : [{ ...formState, id: uuid() }],
+            ? [...data, { ...formState, id: id }]
+            : [{ ...formState, id: id }],
       }).then(() => {
         data && data.length
-          ? updateData({ ...formState, id: uuid() })
-          : addData([{ ...formState, id: uuid() }]);
+          ? updateData({ ...formState, id: id })
+          : addData([{ ...formState, id: id }]);
         setLoading(false);
         props.ModalHandler();
+        navigate(`/project/${id}`);
       });
     });
   };

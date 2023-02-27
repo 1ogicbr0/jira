@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { invoke } from "@forge/bridge";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../context/useContext";
 import Edit from "./Edit";
+import Delete from "./Delete";
 const DetailsPage = () => {
   const { id } = useParams();
   const { data } = useContext(MyContext);
@@ -25,10 +25,17 @@ const DetailsPage = () => {
       {page && (
         <>
           <h2>{page.name}</h2>
-          <Edit page={page}
-           setIsLoading={setIsLoading}
-            isLoading={isLoading}
-          />
+          <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        gridGap: "10px",
+      }}
+    >
+          <Edit page={page} setIsLoading={setIsLoading}  isLoading={isLoading}/>
+          <Delete page={page} setIsLoading={setIsLoading}  isLoading={isLoading}/>
+          </div>
         </>
       )}
     </>

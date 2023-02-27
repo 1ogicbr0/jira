@@ -1,5 +1,5 @@
 import React, {  useEffect, useState } from "react";
-import { view, invoke } from "@forge/bridge";
+import { view } from "@forge/bridge";
 import {  Router, Route, Routes, } from "react-router";
 import PropTypes from "prop-types";
 

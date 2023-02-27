@@ -19,9 +19,23 @@ export default function Home() {
       console.log("projects", projects);
     });
   }, []);
+
+  if(isLoading){
+    return (
+            <div
+          style={{
+            position: "absolute",
+            top: "40%",
+            left: "50%",
+          }}
+        >
+          <Loading size="xlarge" appearance="inherit" />
+        </div>
+    )
+  }
   return (
     <>
-      <div>Home</div>
+      {/* <div>Home</div> */}
       <div
         style={{
           display: "flex",
@@ -62,19 +76,6 @@ export default function Home() {
       ) : (
         
         <div>No Projects</div>
-      )}
-      {isLoading && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            
-          }}
-        >
-          <Loading size="xlarge" appearance="inherit" />
-        </div>
       )}
     </>
   );
