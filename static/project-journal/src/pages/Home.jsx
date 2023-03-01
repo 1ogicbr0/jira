@@ -9,16 +9,17 @@ import { MyContext } from "../context/useContext";
 export default function Home() {
 
   //checking project id of the project
-  const [projectId, setId] = useState(null);
+  const [projectId, setProjectId] = useState(null);
   view.getContext().then((data) => {
     const {  id } = data.extension.project;
-    setId(id);
+    setProjectId(id);
   });
 
   const { data: projects, addData } = useContext(MyContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const navigate = useNavigate();
+  
   useEffect(() => {
     setIsLoading(true);
     invoke("getStorage", { key: "projectJournal" }).then((data) => {

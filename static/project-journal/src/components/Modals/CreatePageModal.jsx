@@ -9,19 +9,22 @@ import Modal, {
 
 import CustomForm from "../Form";
 
-const CustomModal = (props) => {
+const CustomModal = ({
+  isModalOpen,
+  ModalCloseHandler,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   
 
 
   const close = () => {
     setIsOpen(false);
-    props.ModalCloseHandler();
+    ModalCloseHandler();
   };
 
   useEffect(() => {
-    setIsOpen(props.isModalOpen);
-  }, [props]);
+    setIsOpen(isModalOpen);
+  }, [isModalOpen]);
 
   return (
     <ModalTransition>
@@ -34,7 +37,7 @@ const CustomModal = (props) => {
             <CustomForm
               ModalHandler={() => {
                 setIsOpen(false);
-                props.ModalCloseHandler();
+                ModalCloseHandler();
               }}
             />
           </ModalBody>

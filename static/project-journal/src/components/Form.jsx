@@ -18,17 +18,17 @@ const CustomForm = (props) => {
   const { updateData, addData } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
 
-  const [projectId, setId] = useState(null);
+  const [projectId, setProjectId] = useState(null);
   view.getContext().then((data) => {
     const {  id } = data.extension.project;
-    setId(id);
+    setProjectId(id);
   });
 
 
   const submitHandler = (formState) => {
     console.log(formState);
     setLoading(true);
-    const id = uuid()
+    const id = uuid();
     invoke("getStorage", { key: "projectJournal" }).then((data) => {
       invoke("setStorage", {
         key: "projectJournal",
