@@ -1,9 +1,9 @@
 import React, { Fragment, useState,useContext } from "react";
 import { invoke } from "@forge/bridge";
-import { MyContext } from "../context/useContext";
+import { MyContext } from "../../context/useContext";
 import PropTypes from "prop-types";
 import Textfield from "@atlaskit/textfield";
-import Loading from "./Spinner";
+import Loading from "../Spinner";
 import Button, { ButtonGroup } from "@atlaskit/button";
 import Modal, {
   ModalBody,

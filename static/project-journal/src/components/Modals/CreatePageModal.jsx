@@ -7,7 +7,7 @@ import Modal, {
   ModalTransition,
 } from "@atlaskit/modal-dialog";
 
-import CustomForm from "./Form";
+import CustomForm from "../Form";
 
 const CustomModal = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);

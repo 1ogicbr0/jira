@@ -4,7 +4,7 @@ import { invoke } from "@forge/bridge";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import Loading from "../components/Spinner";
-import CustomModal from "../components/Modal";
+import CreatePageModal from "../components/Modals/CreatePageModal";
 import { MyContext } from "../context/useContext";
 export default function Home() {
   const { data: projects, addData } = useContext(MyContext);
@@ -46,7 +46,7 @@ export default function Home() {
         <Button appearance="primary" onClick={() => setIsModalOpen(true)}>
           Create a Project
         </Button>
-        <CustomModal
+        <CreatePageModal
           isModalOpen={isModalOpen}
           ModalCloseHandler={() => setIsModalOpen(!isModalOpen)}
         />

@@ -1,7 +1,7 @@
 import React, {  Fragment, useState, useContext } from "react";
 import { invoke } from "@forge/bridge";
-import { MyContext } from "../context/useContext";
-import Loading from "./Spinner";
+import { MyContext } from "../../context/useContext";
+import Loading from "../Spinner";
 import PropTypes from "prop-types";
 import ErrorIcon from '@atlaskit/icon/glyph/error'
 
