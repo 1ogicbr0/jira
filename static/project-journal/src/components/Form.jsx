@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "../context/useContext";
 import { v4 as uuid } from "uuid";
-import { invoke } from "@forge/bridge";
+import { invoke, view } from "@forge/bridge";
 import Textfield from "@atlaskit/textfield";
 import Loading from "./Spinner";
 import Button, { ButtonGroup } from "@atlaskit/button";
@@ -17,6 +17,14 @@ const CustomForm = (props) => {
   const navigate = useNavigate();
   const { updateData, addData } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
+
+  const [projectId, setId] = useState(null);
+  view.getContext().then((data) => {
+    const {  id } = data.extension.project;
+    setId(id);
+  });
+
+
   const submitHandler = (formState) => {
     console.log(formState);
     setLoading(true);
@@ -26,12 +34,12 @@ const CustomForm = (props) => {
         key: "projectJournal",
         data:
           data && data.length
-            ? [...data, { ...formState, id: id }]
-            : [{ ...formState, id: id }],
+            ? [...data, { ...formState, id: id, projectId: projectId }]
+            : [{ ...formState, id: id, projectId: projectId }],
       }).then(() => {
         data && data.length
-          ? updateData({ ...formState, id: id })
-          : addData([{ ...formState, id: id }]);
+          ? updateData({ ...formState, id: id, projectId: projectId })
+          : addData([{ ...formState, id: id, projectId: projectId }]);
         setLoading(false);
         props.ModalHandler();
         navigate(`/project/${id}`);

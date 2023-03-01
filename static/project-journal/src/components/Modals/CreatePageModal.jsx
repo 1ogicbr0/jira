@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Modal, {
   ModalBody,
   ModalFooter,
@@ -10,7 +10,9 @@ import Modal, {
 import CustomForm from "../Form";
 
 const CustomModal = (props) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  
+
 
   const close = () => {
     setIsOpen(false);
@@ -19,7 +21,6 @@ const CustomModal = (props) => {
 
   useEffect(() => {
     setIsOpen(props.isModalOpen);
-
   }, [props]);
 
   return (
