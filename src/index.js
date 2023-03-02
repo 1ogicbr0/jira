@@ -41,7 +41,7 @@ resolver.define("getIssues", async ({ payload }) => {
 
 resolver.define(
   "getStorage",
-  async ({ payload }) => await storage.get(payload.key && payload.key)
+  async ({ payload }) => await storage.get(payload.key)
 );
 
 resolver.define(

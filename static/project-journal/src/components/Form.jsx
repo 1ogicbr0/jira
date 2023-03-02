@@ -14,7 +14,6 @@ import Form, {
 } from "@atlaskit/form";
 
 const CustomForm = (props) => {
-  // const navigate = useNavigate();
   const { updateData, addData } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +42,7 @@ const CustomForm = (props) => {
           : addData([{ ...formState, id: id, projectKey: projectKey }]);
         setLoading(false);
         props.ModalHandler();
-        // navigate(`/project/${id}`);
+
       });
     });
   };
