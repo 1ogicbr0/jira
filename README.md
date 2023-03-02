@@ -35,6 +35,10 @@ forge deploy
 forge install
 ```
 
+- Create credentials.yml file and add the below line with your Jira Product app id
+  APP_ID='ari:cloud:ecosystem::app/58969a38-064b-4a1e-b145-378e50ac091e'
+- Run the command "npm run deploy" in the react directory this should add app-id to your manifest.yml file
+
 ### Notes
 - Use the `forge deploy` command when you want to persist code changes.
 - Use the `forge install` command when you want to install the app on a new site.
