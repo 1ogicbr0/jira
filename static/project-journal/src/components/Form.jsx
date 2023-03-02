@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+
 import { MyContext } from "../context/useContext";
 import { v4 as uuid } from "uuid";
 import { invoke, view } from "@forge/bridge";
@@ -14,35 +14,36 @@ import Form, {
 } from "@atlaskit/form";
 
 const CustomForm = (props) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { updateData, addData } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
 
-  const [projectId, setProjectId] = useState(null);
-  view.getContext().then((data) => {
-    const {  id } = data.extension.project;
-    setProjectId(id);
-  });
-
+  const [projectKey, setProjectKey] = useState(null);
+  useEffect(() => {
+    view.getContext().then((data) => {
+      const { key } = data.extension.project;
+      setProjectKey(key);
+    });
+  }, []);
 
   const submitHandler = (formState) => {
     console.log(formState);
     setLoading(true);
     const id = uuid();
-    invoke("getStorage", { key: "projectJournal" }).then((data) => {
+    invoke("getStorage", { key: projectKey }).then((data) => {
       invoke("setStorage", {
-        key: "projectJournal",
+        key: projectKey,
         data:
           data && data.length
-            ? [...data, { ...formState, id: id, projectId: projectId }]
-            : [{ ...formState, id: id, projectId: projectId }],
+            ? [...data, { ...formState, id: id, projectKey: projectKey }]
+            : [{ ...formState, id: id, projectKey: projectKey }],
       }).then(() => {
         data && data.length
-          ? updateData({ ...formState, id: id, projectId: projectId })
-          : addData([{ ...formState, id: id, projectId: projectId }]);
+          ? updateData({ ...formState, id: id, projectKey: projectKey })
+          : addData([{ ...formState, id: id, projectKey: projectKey }]);
         setLoading(false);
         props.ModalHandler();
-        navigate(`/project/${id}`);
+        // navigate(`/project/${id}`);
       });
     });
   };
@@ -80,7 +81,7 @@ const CustomForm = (props) => {
                 Cancel
               </Button>
               <Button type="submit" appearance="primary">
-                {loading ? <Loading/>: "Submit"}
+                {loading ? <Loading /> : "Submit"}
               </Button>
             </ButtonGroup>
           </FormFooter>

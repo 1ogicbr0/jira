@@ -7,39 +7,44 @@ import Loading from "../components/Spinner";
 import CreatePageModal from "../components/Modals/CreatePageModal";
 import { MyContext } from "../context/useContext";
 export default function Home() {
-
   //checking project id of the project
-  const [projectId, setProjectId] = useState(null);
-  view.getContext().then((data) => {
-    const {  id } = data.extension.project;
-    setProjectId(id);
-  });
-
+  const [projectKey, setProjectKey] = useState(null);
   const { data: projects, addData } = useContext(MyContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
-    setIsLoading(true);
-    invoke("getStorage", { key: "projectJournal" }).then((data) => {
-      addData(data.filter(item => item.projectId===projectId));
-      setIsLoading(false);
-    }); 
-  }, [projectId]);
+    view.getContext().then((data) => {
+      const { key } = data.extension.project;
+      setProjectKey(key);
+    });
+  }, []);
 
-  if(isLoading){
+  
+  useEffect(() => {
+    setIsLoading(true);
+    invoke("getStorage", { key: projectKey }).then((data) => {
+      addData(data);
+      setIsLoading(false);
+    }).catch(() => {
+      // console.log(err);
+    });
+
+  }, [projectKey]);
+
+  if (isLoading) {
     return (
-            <div
-          style={{
-            position: "absolute",
-            top: "40%",
-            left: "50%",
-          }}
-        >
-          <Loading size="xlarge" appearance="inherit" />
-        </div>
-    )
+      <div
+        style={{
+          position: "absolute",
+          top: "40%",
+          left: "50%",
+        }}
+      >
+        <Loading size="xlarge" appearance="inherit" />
+      </div>
+    );
   }
   return (
     <>
@@ -82,7 +87,6 @@ export default function Home() {
           </div>
         ))
       ) : (
-        
         <div>No Projects</div>
       )}
     </>

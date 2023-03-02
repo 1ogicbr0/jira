@@ -12,25 +12,22 @@ function MyProvider({ children }) {
     setData(newData);
   };
   const updateData = (newData) => {
-        setData(prevData => {
-            return [...prevData, newData]
-        })
+    setData((prevData) => {
+      return [...prevData, newData];
+    });
   };
 
- const deleteData = (id) => {
+  const deleteData = (id) => {
 
-    setData(prevData => { 
+      setData((prevData) => {
         return prevData.filter((item) => {
-            return item.id !== id;
-        })
-    }
-    )
+          return item.id !== id;
+        });
+      });
     navigate("/");
-
   };
-const changeData = (id, name) => {
-
-    setData(()=>{
+  const changeData = (id, name) => {
+    setData(() => {
       return data.map((item) => {
         if (item.id === id) {
           return { ...item, name: name };
@@ -38,10 +35,11 @@ const changeData = (id, name) => {
         return item;
       });
     });
-
   };
   return (
-    <MyContext.Provider value={{ data, updateData, deleteData, changeData, addData }}>
+    <MyContext.Provider
+      value={{ data, updateData, deleteData, changeData, addData }}
+    >
       {children}
     </MyContext.Provider>
   );

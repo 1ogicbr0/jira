@@ -1,30 +1,35 @@
-import React, {  Fragment, useState, useContext } from "react";
-import { invoke } from "@forge/bridge";
+import React, { Fragment, useState, useContext, useEffect } from "react";
+import { invoke ,view} from "@forge/bridge";
 import { MyContext } from "../../context/useContext";
 import Loading from "../Spinner";
 import PropTypes from "prop-types";
-import ErrorIcon from '@atlaskit/icon/glyph/error'
+import ErrorIcon from "@atlaskit/icon/glyph/error";
 
 import Button from "@atlaskit/button";
 import Modal, {
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    ModalTitle,
-    ModalTransition,
-  } from "@atlaskit/modal-dialog";
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+  ModalTransition,
+} from "@atlaskit/modal-dialog";
 
-
-const  Delete = ({ page, setIsLoading, isLoading }) => {
+const Delete = ({ page, setIsLoading, isLoading }) => {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const { deleteData, data } = useContext(MyContext);
   const { id } = page;
-
+  const [projectKey, setProjectKey] = useState(null);
+  useEffect(() => {
+    view.getContext().then((data) => {
+      const { key } = data.extension.project;
+      setProjectKey(key);
+    });
+  }, []);
 
   const handleDelete = () => {
     setIsLoading(true);
     invoke("setStorage", {
-      key: "projectJournal",
+      key: projectKey,
       data: data.filter((item) => item.id !== id),
     }).then(() => {
       deleteData(id);
@@ -33,7 +38,6 @@ const  Delete = ({ page, setIsLoading, isLoading }) => {
     });
   };
 
-
   return (
     <Fragment>
       <ModalTransition>
@@ -41,16 +45,27 @@ const  Delete = ({ page, setIsLoading, isLoading }) => {
           <Modal onClose={close}>
             <ModalHeader>
               <ModalTitle>
-              <h6> 
-                <ErrorIcon primaryColor="red" size="medium" label=""/>
-                 Delete {page.name}? </h6>
+                <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gridGap: "10px",
+                }}
+                >
+                  <ErrorIcon primaryColor="red" size="medium" label="" />
+                  Delete {page.name}?{" "}
+                </div>
               </ModalTitle>
             </ModalHeader>
             <ModalBody>
-            <p>You&apos;re about to permanently delete this project journal page, and all of its data. If you&apos;re not sure, you can resolve or close this issue instead.</p>
+              <p>
+                You&apos;re about to permanently delete this project journal
+                page, and all of its data. If you&apos;re not sure, you can
+                resolve or close this issue instead.
+              </p>
             </ModalBody>
             <ModalFooter>
-            <Button appearance="danger" autoFocus onClick={handleDelete}>
+              <Button appearance="danger" autoFocus onClick={handleDelete}>
                 {isLoading ? <Loading size="small" /> : "Yes"}
               </Button>
               <Button
@@ -59,7 +74,6 @@ const  Delete = ({ page, setIsLoading, isLoading }) => {
               >
                 Cancel
               </Button>
-
             </ModalFooter>
           </Modal>
         )}
@@ -74,11 +88,10 @@ const  Delete = ({ page, setIsLoading, isLoading }) => {
       </Button>
     </Fragment>
   );
-}
+};
 
 Delete.propTypes = {
   page: PropTypes.object,
 };
-
 
 export default Delete;

@@ -1,5 +1,5 @@
-import React, { Fragment, useState,useContext } from "react";
-import { invoke } from "@forge/bridge";
+import React, { Fragment, useState,useContext, useEffect } from "react";
+import { invoke ,view} from "@forge/bridge";
 import { MyContext } from "../../context/useContext";
 import PropTypes from "prop-types";
 import Textfield from "@atlaskit/textfield";
@@ -24,12 +24,19 @@ const  Edit = ({ page, setIsLoading, isLoading }) => {
   const { changeData, data } = useContext(MyContext);
   const [newData, setNewData] = useState(page.name);
   const { id } = page;
+  const [projectKey, setProjectKey] = useState(null);
+  useEffect(() => {
+    view.getContext().then((data) => {
+      const { key } = data.extension.project;
+      setProjectKey(key);
+    });
+  }, []);
 
 
   const handleEdit = () => {
     setIsLoading(true);
     invoke("setStorage", {
-      key: "projectJournal",
+      key: projectKey,
       data: data.map((item) =>
         item.id === id ? { ...item, name: newData } : item
       ),

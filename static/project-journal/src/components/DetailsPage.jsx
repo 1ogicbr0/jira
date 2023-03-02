@@ -14,7 +14,7 @@ const DetailsPage = () => {
     const page = data.find((item) => item.id === id);
     setPage(page);
   }, [data]);
-  console.log(page);
+
 
   return (
     <>
