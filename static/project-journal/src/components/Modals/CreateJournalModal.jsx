@@ -7,7 +7,7 @@ import Modal, {
   ModalTransition,
 } from "@atlaskit/modal-dialog";
 
-import CustomForm from "../Form";
+import CustomForm from "../Forms/CreateJournalForm";
 
 const CustomModal = ({
   isModalOpen,

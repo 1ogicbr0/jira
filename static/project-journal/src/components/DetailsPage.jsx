@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../context/useContext";
-import Edit from "./Modals/EditPageModal";
-import Delete from "./Modals/DeletePageModal";
+import Edit from "./Modals/EditJournalModal";
+import Delete from "./Modals/DeleteJournalModal";
 const DetailsPage = () => {
   const { id } = useParams();
   const { data } = useContext(MyContext);

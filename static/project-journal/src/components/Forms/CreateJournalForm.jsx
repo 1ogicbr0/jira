@@ -1,10 +1,10 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 
-import { MyContext } from "../context/useContext";
+import { MyContext } from "../../context/useContext";
 import { v4 as uuid } from "uuid";
 import { invoke, view } from "@forge/bridge";
 import Textfield from "@atlaskit/textfield";
-import Loading from "./Spinner";
+import Loading from "../Spinner";
 import Button, { ButtonGroup } from "@atlaskit/button";
 import Form, {
   ErrorMessage,

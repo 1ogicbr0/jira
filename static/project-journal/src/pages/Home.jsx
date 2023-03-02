@@ -4,8 +4,9 @@ import { invoke, view } from "@forge/bridge";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import Loading from "../components/Spinner";
-import CreatePageModal from "../components/Modals/CreatePageModal";
+import CreatePageModal from "../components/Modals/CreateJournalModal";
 import { MyContext } from "../context/useContext";
+
 export default function Home() {
   //checking project id of the project
   const [projectKey, setProjectKey] = useState(null);
