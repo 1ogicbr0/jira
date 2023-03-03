@@ -64,6 +64,12 @@ export default function Home() {
       {projects?.length > 0 ? (
         projects.map((project, index) => (
           <div
+          key={project.id}
+          style={{
+            display: "flex",
+            gap: "1rem",
+          }}>
+          <div
             key={project.id}
             style={{
               display: "flex",
@@ -75,11 +81,15 @@ export default function Home() {
               margin: "0px 5px",
               fontSize: "20px",
               cursor: "pointer",
+              boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.75)",
+              height: "300px",
+              width: "200px",
             }}
             onClick={() => navigate(`/project/${project.id}`)}
           >
-            <div>{index + 1}.</div>
+            {/* <div>{index + 1}.</div> */}
             <div>{project.name}</div>
+          </div>
           </div>
         ))
       ) : (

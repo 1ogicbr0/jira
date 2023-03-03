@@ -6,11 +6,11 @@ console.log("KEY",projectId)
 
 let journals = await getJournals(projectId)
 
-if(!update){
-  createJournal(name,projectId,id,journals).then(() => console.log("Journal created"))
-}
 if(update){
   updateJournal(name,projectId,id,journals).then(() => console.log("Journal updated"))
+}else{
+  createJournal(name,projectId,id,journals).then(() => console.log("Journal created"))
+
 }
 // if(journals){
 // console.log("JOURNALS", journals)

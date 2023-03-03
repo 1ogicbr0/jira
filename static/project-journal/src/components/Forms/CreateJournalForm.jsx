@@ -9,7 +9,6 @@ import Form, {
   ErrorMessage,
   Field,
   FormFooter,
-  ValidMessage,
 } from "@atlaskit/form";
 import ProjectJournal from "../persistence/model/ProjectJournal";
 
@@ -40,12 +39,12 @@ const CustomForm = (props) => {
             label="Project Name"
             name="name"
             validate={validate}
+            isRequired
             defaultValue=""
           >
-            {({ fieldProps, error, meta: { valid } }) => (
+            {({ fieldProps, error }) => (
               <Fragment>
                 <Textfield {...fieldProps} />
-                {valid && <ValidMessage>Valid Project Name</ValidMessage>}
                 {error === "EMPTY_FORM" && (
                   <ErrorMessage>Project name is empty</ErrorMessage>
                 )}
