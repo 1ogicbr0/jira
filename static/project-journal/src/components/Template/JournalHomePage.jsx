@@ -19,7 +19,6 @@ const DetailsPage = () => {
     view.getContext().then((data) => {
       const { key } = data.extension.project;
       setProjectKey(key);
-      console.log("Project Key",projectKey)
     });
     if(projectKey){
       getJournalById(id,projectKey).then(data => {setProject(data)})

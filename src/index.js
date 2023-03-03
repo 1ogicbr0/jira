@@ -2,15 +2,12 @@ import Resolver from "@forge/resolver";
 import api, { route, router, storage } from "@forge/api";
 
 const resolver = new Resolver();
-console.log("WORKING");
 resolver.define("getText", (req) => {
-  console.log(req);
   return "Hello, world!";
 });
 
 resolver.define("getIssues", async ({ payload }) => {
   const { projectId, projectKey } = payload;
-  console.log(payload);
   const jql = `project = ${projectId ? projectId : projectKey}`;
   //key & id
   const response = await api
@@ -23,11 +20,9 @@ resolver.define("getIssues", async ({ payload }) => {
         },
       }
     );
-  console.log(`Response: ${response.status} ${response.statusText}`);
   //write a function to get the status
 
   const json = await response.json();
-  console.log(json);
   return json.issues.map((issue) => ({
     key: issue.key,
     summary: issue.fields.summary,
@@ -46,7 +41,7 @@ resolver.define(
 
 resolver.define(
   "setStorage",
-  async ({ payload }) => {console.log(payload),await storage.set(payload.key, payload.journals)}
+  async ({ payload }) => await storage.set(payload.key, payload.journals)
 );
 
 resolver.define(

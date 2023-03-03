@@ -27,7 +27,6 @@ const  Edit = ({ page ,setIsLoading, isLoading }) => {
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [newData, setNewData] = useState(page.name);
   const { id } = page;
-  console.log("PAGE",page)
   const [projectKey, setProjectKey] = useState(null);
   useEffect(() => {
     view.getContext().then((data) => {
@@ -39,7 +38,6 @@ const  Edit = ({ page ,setIsLoading, isLoading }) => {
 
   const handleEdit = ({name}) => {
     setIsLoading(true);
-    console.log(name,projectKey,id);
     const update = true
     
     ProjectJournal(name,id,projectKey,update).then(() => {

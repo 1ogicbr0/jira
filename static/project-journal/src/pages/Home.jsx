@@ -6,14 +6,14 @@ import Loading from "../components/PageLoader";
 import CreatePageModal from "../components/Modals/CreateJournalModal";
 
 import { getJournals } from "../components/persistence/utils/StorageUtils";
+import CustomDynamicTable from "../components/DynamicTable";
 
 export default function Home() {
   //checking project id of the project
   const [projectKey, setProjectKey] = useState(null);
-  const [projects, setProjects] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [journals, setProjects] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const navigate = useNavigate();
   
   useEffect(() => {
     view.getContext().then((data) => {
@@ -24,7 +24,6 @@ export default function Home() {
 
   
   useEffect(() => {
-    setIsLoading(true);
     getJournals(projectKey).then(data => {setProjects(data)})
     .then(() => setIsLoading(false));
   }, [projectKey]);
@@ -48,53 +47,25 @@ export default function Home() {
       <div
         style={{
           display: "flex",
-          justifyContent: "flex-end",
+          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
+          gap: "20px",
+          padding: "20px",
         }}
       >
-        <Button appearance="primary" onClick={() => setIsModalOpen(true)}>
-          Create a Project
-        </Button>
+        <h2>Project Journals</h2>
+
         <CreatePageModal
           isModalOpen={isModalOpen}
           ModalCloseHandler={() => setIsModalOpen(!isModalOpen)}
         />
+      {journals?.length > 0 ? <CustomDynamicTable journals={journals}/> :  <div>No Journals</div>}
+      <Button appearance="primary" onClick={() => setIsModalOpen(true)}>
+          Create a Journal
+        </Button>
       </div>
 
-      {projects?.length > 0 ? (
-        projects.map((project, index) => (
-          <div
-          key={project.id}
-          style={{
-            display: "flex",
-            gap: "1rem",
-          }}>
-          <div
-            key={project.id}
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              padding: "10px",
-              border: "none",
-              borderRadius: "10px",
-              margin: "0px 5px",
-              fontSize: "20px",
-              cursor: "pointer",
-              boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.75)",
-              height: "300px",
-              width: "200px",
-            }}
-            onClick={() => navigate(`/project/${project.id}`)}
-          >
-            {/* <div>{index + 1}.</div> */}
-            <div>{project.name}</div>
-          </div>
-          </div>
-        ))
-      ) : (
-        <div>No Projects</div>
-      )}
     </>
   );
 }

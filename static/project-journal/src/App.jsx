@@ -14,9 +14,6 @@ function App() {
   const [ setNumberOfPages] = useState([]);
 
   useEffect(() => {
-    // invoke('setStorage', { key:'dataString', data:'binyam' })
-    // invoke('setStorage', { key:'dataArray', data:[{name:"Binyam"},{name:"Shehry"},{name:"Ronaldo"}] })
-    // invoke('getStorage', {key: 'dataArray'}).then(data => console.log(data));
   
     view.createHistory().then((newHistory) => {
       setHistory(newHistory);

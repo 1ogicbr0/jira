@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import {  view } from "@forge/bridge";
 import Textfield from "@atlaskit/textfield";
@@ -10,10 +9,10 @@ import Form, {
   Field,
   FormFooter,
 } from "@atlaskit/form";
+
 import ProjectJournal from "../persistence/model/ProjectJournal";
 
 const CustomForm = (props) => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const [projectId, setProjectId] = useState(null);
@@ -28,7 +27,7 @@ const CustomForm = (props) => {
     const id = uuid();
     setLoading(true);
     ProjectJournal(name,id,projectId).then(() => {
-      setLoading(false);props.ModalHandler();navigate(`/project/${id}`);
+      setLoading(false);props.ModalHandler();
     });
   }
   return (

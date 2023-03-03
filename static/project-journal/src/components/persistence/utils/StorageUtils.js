@@ -28,7 +28,7 @@ export const getJournals = async (projectKey) => {
   if(journals){
     return journals
   }
-  console.log("No journals",journals)
+  ("No journals",journals)
   return null;
 };
 
