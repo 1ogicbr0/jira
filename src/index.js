@@ -46,7 +46,7 @@ resolver.define(
 
 resolver.define(
   "setStorage",
-  async ({ payload }) => await storage.set(payload.key, [...payload.data])
+  async ({ payload }) => {console.log(payload),await storage.set(payload.key, payload.journals)}
 );
 
 resolver.define(

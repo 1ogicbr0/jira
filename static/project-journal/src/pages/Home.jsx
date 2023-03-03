@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Button from "@atlaskit/button";
-import { invoke, view } from "@forge/bridge";
+import { view } from "@forge/bridge";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import Loading from "../components/Spinner";
+import Loading from "../components/PageLoader";
 import CreatePageModal from "../components/Modals/CreateJournalModal";
-import { MyContext } from "../context/useContext";
+
+import { getJournals } from "../components/persistence/utils/StorageUtils";
 
 export default function Home() {
   //checking project id of the project
   const [projectKey, setProjectKey] = useState(null);
-  const { data: projects, addData } = useContext(MyContext);
+  const [projects, setProjects] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const navigate = useNavigate();
@@ -20,18 +20,13 @@ export default function Home() {
       const { key } = data.extension.project;
       setProjectKey(key);
     });
-  }, []);
+  }, [projectKey]);
 
   
   useEffect(() => {
     setIsLoading(true);
-    invoke("getStorage", { key: projectKey }).then((data) => {
-      addData(data);
-      setIsLoading(false);
-    }).catch(() => {
-      // console.log(err);
-    });
-
+    getJournals(projectKey).then(data => {setProjects(data)})
+    .then(() => setIsLoading(false));
   }, [projectKey]);
 
   if (isLoading) {

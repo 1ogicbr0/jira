@@ -1,7 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { MyContext } from "../../context/useContext";
 import { v4 as uuid } from "uuid";
-import {  view } from "@forge/bridge";
+import { invoke, view } from "@forge/bridge";
 import Textfield from "@atlaskit/textfield";
 import Loading from "../PageLoader";
 import Button, { ButtonGroup } from "@atlaskit/button";
@@ -16,6 +17,7 @@ import ProjectJournal from "../persistence/model/ProjectJournal";
 const CustomForm = (props) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   const [projectId, setProjectId] = useState(null);
   useEffect(() => {
@@ -26,21 +28,25 @@ const CustomForm = (props) => {
   }, []);
 
   const submitHandler = ({name}) => {
-    const id = uuid();
-    setLoading(true);
-    ProjectJournal(name,id,projectId).then(() => {
-      setLoading(false);props.ModalHandler();navigate(`/project/${id}`);
+    // setIsLoading(true);
+    console.log(name,projectId,id);
+    const update = true
+    
+    ProjectJournal(name,id,projectId,update).then(() => {
+      setIsOpenEdit(false);
+      // setIsLoading(false);
+      navigate("/");
     });
   }
   return (
     <Form onSubmit={submitHandler}>
       {({ formProps }) => (
-        <form {...formProps} name="project-form">
+        <form {...formProps} name="edit-form">
           <Field
             label="Project Name"
             name="name"
             validate={validate}
-            defaultValue=""
+            defaultValue={props.page.name}
           >
             {({ fieldProps, error, meta: { valid } }) => (
               <Fragment>

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { MyProvider } from "./context/useContext";
 import Home from "./pages/Home";
-import DetailsPage from  "./components/DetailsPage";
+import JournalHomePage from  "./components/Template/JournalHomePage";
 
 
 
@@ -63,7 +63,7 @@ function App() {
               path="/"
               element={<Home setNumberOfPages={setNumberOfPages} />}
             />
-             <Route path="/project/:id" element={<DetailsPage/>} />
+             <Route path="/project/:id" element={<JournalHomePage/>} />
           </Routes>
           </MyProvider>
         </Router>

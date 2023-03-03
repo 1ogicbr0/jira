@@ -1,9 +1,10 @@
-import React, { Fragment, useState, useContext, useEffect } from "react";
-import { invoke ,view} from "@forge/bridge";
-import { MyContext } from "../../context/useContext";
-import Loading from "../Spinner";
+import React, { Fragment, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { view } from "@forge/bridge";
+import Loading from "../PageLoader";
 import PropTypes from "prop-types";
 import ErrorIcon from "@atlaskit/icon/glyph/error";
+import { deleteJournalById } from "../persistence/utils/StorageUtils";
 
 import Button from "@atlaskit/button";
 import Modal, {
@@ -15,8 +16,8 @@ import Modal, {
 } from "@atlaskit/modal-dialog";
 
 const Delete = ({ page, setIsLoading, isLoading }) => {
+  const navigate = useNavigate();
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const { deleteData, data } = useContext(MyContext);
   const { id } = page;
   const [projectKey, setProjectKey] = useState(null);
   useEffect(() => {
@@ -28,14 +29,9 @@ const Delete = ({ page, setIsLoading, isLoading }) => {
 
   const handleDelete = () => {
     setIsLoading(true);
-    invoke("setStorage", {
-      key: projectKey,
-      data: data.filter((item) => item.id !== id),
-    }).then(() => {
-      deleteData(id);
-      setIsOpenDelete(false);
-      setIsLoading(false);
-    });
+    if(projectKey){
+      deleteJournalById(id,projectKey).then(() => {setIsOpenDelete(false);setIsLoading(false)}).then(() => navigate("/"));
+    }
   };
 
   return (

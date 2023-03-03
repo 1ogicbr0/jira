@@ -1,9 +1,9 @@
-import React, { Fragment, useState,useContext, useEffect } from "react";
-import { invoke ,view} from "@forge/bridge";
-import { MyContext } from "../../context/useContext";
+import React, { Fragment, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { view } from "@forge/bridge";
 import PropTypes from "prop-types";
 import Textfield from "@atlaskit/textfield";
-import Loading from "../Spinner";
+import Loading from "../PageLoader";
 import Button, { ButtonGroup } from "@atlaskit/button";
 import Modal, {
   ModalBody,
@@ -19,11 +19,15 @@ import Form, {
   ValidMessage,
 } from "@atlaskit/form";
 
-const  Edit = ({ page, setIsLoading, isLoading }) => {
+
+import ProjectJournal from "../persistence/model/ProjectJournal";
+
+const  Edit = ({ page ,setIsLoading, isLoading }) => {
+  const navigate = useNavigate();
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const { changeData, data } = useContext(MyContext);
   const [newData, setNewData] = useState(page.name);
   const { id } = page;
+  console.log("PAGE",page)
   const [projectKey, setProjectKey] = useState(null);
   useEffect(() => {
     view.getContext().then((data) => {
@@ -33,17 +37,15 @@ const  Edit = ({ page, setIsLoading, isLoading }) => {
   }, []);
 
 
-  const handleEdit = () => {
+  const handleEdit = ({name}) => {
     setIsLoading(true);
-    invoke("setStorage", {
-      key: projectKey,
-      data: data.map((item) =>
-        item.id === id ? { ...item, name: newData } : item
-      ),
-    }).then(() => {
-      changeData(id, newData);
+    console.log(name,projectKey,id);
+    const update = true
+    
+    ProjectJournal(name,id,projectKey,update).then(() => {
       setIsOpenEdit(false);
       setIsLoading(false);
+      navigate("/");
     });
   };
 
