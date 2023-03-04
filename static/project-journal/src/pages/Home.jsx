@@ -5,6 +5,7 @@ import { view, invoke } from "@forge/bridge";
 import Loading from "../components/PageLoader";
 import CreatePageModal from "../components/Modals/CreateJournalModal";
 
+import { getJournals } from "../components/persistence/utils/StorageUtils";
 import { MyContext } from "../context/useContext";
 import CustomDynamicTable from "../components/DynamicTable";
 
@@ -23,17 +24,12 @@ export default function Home() {
 
   useEffect(() => {
     setIsLoading(true);
-
-    invoke("getStorage", { key: projectKey })
-      .then((data) => {
-        if (data) {
-          addJournals(data);
-        }
-        setIsLoading(false);
-      })
-      .catch(() => {
-        // console.log(err);
-      });
+    getJournals(projectKey).then((data) => {
+      if (data) {
+        addJournals(data);
+      }
+      setIsLoading(false);
+    });
   }, [projectKey]);
 
   if (isLoading) {
@@ -68,11 +64,10 @@ export default function Home() {
           isModalOpen={isModalOpen}
           ModalCloseHandler={() => setIsModalOpen(!isModalOpen)}
         />
-        {journals.length > 0 ? (
+        {journals && journals.length > 0 && 
           <CustomDynamicTable journals={journals.length > 0 ? journals : []} />
-        ) : (
-          <div>No Journals</div>
-        )}
+        }
+        {!journals && journals.length === 0 && <div>No Journals Found</div>}
         <Button appearance="primary" onClick={() => setIsModalOpen(true)}>
           Create a Journal
         </Button>

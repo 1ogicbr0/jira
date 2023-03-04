@@ -20,14 +20,7 @@ export const updateJournal = async (name, projectKey, id, journals) => {
   });
 };
 
-export const getJournals = async (projectKey) => {
-  const journals = await invoke("getStorage", { key: `${projectKey}` });
-  if (journals) {
-    return journals;
-  }
-  "No journals", journals;
-  return null;
-};
+export const getJournals =  (projectKey) => invoke("getStorage", { key: `${projectKey}` }).then((journals) => journals)
 
 export const getJournalById = async (id, projectKey) => {
   const journals = await invoke("getStorage", { key: projectKey });
