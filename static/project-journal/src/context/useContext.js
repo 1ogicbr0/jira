@@ -5,30 +5,31 @@ import { useNavigate } from "react-router-dom";
 const MyContext = createContext();
 
 function MyProvider({ children }) {
-  const [data, setData] = useState([]);
+  const [journals, setJournals] = useState([]);
   const navigate = useNavigate();
 
-  const addData = (newData) => {
-    setData(newData);
+  const addJournals= (newJournal) => {
+    setJournals(newJournal);
   };
-  const updateData = (newData) => {
-    setData((prevData) => {
-      return [...prevData, newData];
+  const updateJournals= (newJournal) => {
+   
+    setJournals((prevJournals) => {
+      return [...prevJournals, newJournal];
     });
   };
 
-  const deleteData = (id) => {
+  const deleteJournal = (id) => {
 
-      setData((prevData) => {
-        return prevData.filter((item) => {
+      setJournals((prevJournals) => {
+        return prevJournals.filter((item) => {
           return item.id !== id;
         });
       });
     navigate("/");
   };
-  const changeData = (id, name) => {
-    setData(() => {
-      return data.map((item) => {
+  const editJournal = (id, name) => {
+    setJournals(() => {
+      return journals.map((item) => {
         if (item.id === id) {
           return { ...item, name: name };
         }
@@ -38,7 +39,7 @@ function MyProvider({ children }) {
   };
   return (
     <MyContext.Provider
-      value={{ data, updateData, deleteData, changeData, addData }}
+      value={{ journals, updateJournals, deleteJournal, editJournal, addJournals}}
     >
       {children}
     </MyContext.Provider>

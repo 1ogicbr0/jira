@@ -1,19 +1,16 @@
 import { createJournal, getJournals, updateJournal } from "../utils/StorageUtils";
 
-const ProjectJournal = async(name, id, projectId,update) => {
+const ProjectJournal = async(name, id, projectKey,update) => {
 //get all journals for a project
-console.log("KEY",projectId)
 
-let journals = await getJournals(projectId)
+let journals = await getJournals(projectKey)
 
 if(update){
-  updateJournal(name,projectId,id,journals)
+  updateJournal(name,projectKey,id,journals)
 }else{
-  createJournal(name,projectId,id,journals)
+  createJournal(name,projectKey,id,journals)
 }
 
- journals = await getJournals(projectId)
- console.log("New", journals)
 }
 
 export default ProjectJournal;

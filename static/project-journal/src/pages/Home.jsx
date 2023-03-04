@@ -1,31 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "@atlaskit/button";
-import { view } from "@forge/bridge";
-import { useNavigate } from "react-router-dom";
+import { view, invoke } from "@forge/bridge";
+
 import Loading from "../components/PageLoader";
 import CreatePageModal from "../components/Modals/CreateJournalModal";
 
-import { getJournals } from "../components/persistence/utils/StorageUtils";
+import { MyContext } from "../context/useContext";
 import CustomDynamicTable from "../components/DynamicTable";
 
 export default function Home() {
-  //checking project id of the project
+  const { journals, addJournals } = useContext(MyContext);
   const [projectKey, setProjectKey] = useState(null);
-  const [journals, setProjects] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  
+
   useEffect(() => {
     view.getContext().then((data) => {
       const { key } = data.extension.project;
       setProjectKey(key);
     });
-  }, [projectKey]);
+  }, []);
 
-  
   useEffect(() => {
-    getJournals(projectKey).then(data => {setProjects(data)})
-    .then(() => setIsLoading(false));
+    setIsLoading(true);
+
+    invoke("getStorage", { key: projectKey })
+      .then((data) => {
+        if (data) {
+          addJournals(data);
+        }
+        setIsLoading(false);
+      })
+      .catch(() => {
+        // console.log(err);
+      });
   }, [projectKey]);
 
   if (isLoading) {
@@ -60,12 +68,15 @@ export default function Home() {
           isModalOpen={isModalOpen}
           ModalCloseHandler={() => setIsModalOpen(!isModalOpen)}
         />
-      {journals?.length > 0 ? <CustomDynamicTable journals={journals}/> :  <div>No Journals</div>}
-      <Button appearance="primary" onClick={() => setIsModalOpen(true)}>
+        {journals.length > 0 ? (
+          <CustomDynamicTable journals={journals.length > 0 ? journals : []} />
+        ) : (
+          <div>No Journals</div>
+        )}
+        <Button appearance="primary" onClick={() => setIsModalOpen(true)}>
           Create a Journal
         </Button>
       </div>
-
     </>
   );
 }

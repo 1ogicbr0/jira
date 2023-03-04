@@ -1,35 +1,38 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import { v4 as uuid } from "uuid";
-import {  view } from "@forge/bridge";
+import { view } from "@forge/bridge";
 import Textfield from "@atlaskit/textfield";
 import Loading from "../PageLoader";
 import Button, { ButtonGroup } from "@atlaskit/button";
-import Form, {
-  ErrorMessage,
-  Field,
-  FormFooter,
-} from "@atlaskit/form";
-
+import Form, { ErrorMessage, Field, FormFooter } from "@atlaskit/form";
+import { MyContext } from "../../context/useContext";
 import ProjectJournal from "../persistence/model/ProjectJournal";
 
 const CustomForm = (props) => {
   const [loading, setLoading] = useState(false);
-
-  const [projectId, setProjectId] = useState(null);
+  const { updateJournals } = useContext(MyContext);
+  const [projectKey, setProjectKey] = useState(null);
   useEffect(() => {
     view.getContext().then((data) => {
       const { key } = data.extension.project;
-      setProjectId(key);
+      setProjectKey(key);
     });
   }, []);
 
-  const submitHandler = ({name}) => {
+  const submitHandler = ({ name }) => {
     const id = uuid();
     setLoading(true);
-    ProjectJournal(name,id,projectId).then(() => {
-      setLoading(false);props.ModalHandler();
+    ProjectJournal(name, id, projectKey).then((data) => {
+      setLoading(false);
+      updateJournals({
+        id: id,
+        name: name,
+        projectKey: projectKey,
+      });
+
+      props.ModalHandler();
     });
-  }
+  };
   return (
     <Form onSubmit={submitHandler}>
       {({ formProps }) => (
