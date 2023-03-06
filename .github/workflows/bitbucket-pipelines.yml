@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm install --global @forge/cli
+      - run: sudo npm install
+      - run: sudo npm install --global @forge/cli
       - run: forge settings set usage-analytics true
 #       - run: cd static/project-journal/ && npm audit fix
       - run: cd static/project-journal/ && npm install
-      - run: cd static/project-journal/ && npm run deploy      
-#       - run: forge deploy -e staging
+#       - run: cd static/project-journal/ && npm run deploy      
+      - run: sudo forge deploy -e staging
       - run: forge install --upgrade --site shehry-gardian.atlassian.net --non-interactive
