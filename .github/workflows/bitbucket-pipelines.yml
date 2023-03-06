@@ -26,7 +26,7 @@ jobs:
       - run: forge settings set usage-analytics true
 #       - run: cd static/project-journal/ && npm audit fix
       - run: cd static/project-journal/ && npm install
-      - run: forge login --email shehryaar.khan@grandiasolutions.com --token ATATT3xFfGF0PFH1NaKb-P68maDr3NY_7VjnjN-GsecCI-BuiGRY4CAu19RIhf7hjAYYB9ir7MjvAZn9BFEP8avAV_TdmuvzohtFgrlYzklto_4ndwaTn3-z8DznV9OEa9Y7PwoZO2loYE762M4PfFPbI6SRFHcqC47MQD1gc4USsouw_qggje8=8BAC0462 --non-interactive
+      - run: forge login --email shehryaar.khan@grandiasolutions.com --token ${{ secrets.FORGE_API_TOKEN }} --non-interactive
 #       - run: forge variables set FORGE_EMAIL shehryaar.khan@grandiasolutions.com
 #       - run: forge variables set FORGE_API_TOKEN ATATT3xFfGF0GGpYbGRTh-mTj1J0-6UGPFL-44PzCFEV6dnN0FF3GEbz5_yFC4AM9y7U-dxg1bNHIE3ps9eC6cRVi6xeXYNjuxFCm8xyldloe9ZaRLiNekw15HgdSnq3nxM4LcdBFPIkGFWxrDWYJa6lMgl_1X4olH8TTTUXJPCCfE5DEPwNJ_4=BD6C433F
 #       - run: forge deploy -e staging
