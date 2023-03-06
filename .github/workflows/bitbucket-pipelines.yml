@@ -26,6 +26,6 @@ jobs:
       - run: forge settings set usage-analytics true
 #       - run: cd static/project-journal/ && npm audit fix
       - run: cd static/project-journal/ && npm install
-      - run: cd static/project-journal/ && npm deploy      
+      - run: cd static/project-journal/ && npm run deploy      
 #       - run: forge deploy -e staging
       - run: forge install --upgrade --site shehry-gardian.atlassian.net --non-interactive
