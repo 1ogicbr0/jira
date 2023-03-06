@@ -2,9 +2,9 @@ name: Staging
 
 on:
   push:
-    branches: [ dynamicTable ]
+    branches: [ dev ]
   pull_request:
-    branches: [ dynamicTable ]
+    branches: [ dev ]
 
 jobs:
   build:
