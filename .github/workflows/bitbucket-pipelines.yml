@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: sudo npm install
       - run: sudo npm install --global @forge/cli
-      - run: forge settings set usage-analytics true
+      - run: sudo forge settings set usage-analytics true
 #       - run: cd static/project-journal/ && npm audit fix
       - run: cd static/project-journal/ && npm install
 #       - run: cd static/project-journal/ && npm run deploy      
