@@ -34,7 +34,7 @@ jobs:
       - run: forge settings set usage-analytics true
 #       - run: cd static/project-journal/ && npm audit fix
       - run: cd static/project-journal/ && npm install
-      - run: echo ${{ secrets.FORGE_API_TOKEN }}
+      - run: echo ${{secrets.API_KEY}}
 #       - run: forge login --email shehryaar.khan@grandiasolutions.com --token ${{ secrets.FORGE_API_TOKEN }} --non-interactive
 #       - run: forge deploy -e staging
 #       - run: forge install --upgrade --site shehry-gardian.atlassian.net --non-interactive
